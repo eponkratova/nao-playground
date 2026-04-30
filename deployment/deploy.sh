@@ -1,4 +1,4 @@
-!/usr/bin/env bash
+#!/usr/bin/env bash
 set -euo pipefail
 
 : "${NAO_METADATA_URL:?NAO_METADATA_URL is required}"
