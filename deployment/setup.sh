@@ -3,7 +3,7 @@
 set -euo pipefail
 
 : "${NAO_DB_PASSWORD:?NAO_DB_PASSWORD is required}"
-: "${DATA_SOURCE_DB:?DATA_SOURCE_DB is required}"
+: "${DATA_SOURCE_RDS_INSTANCE:?DATA_SOURCE_RDS_INSTANCE is required}"
 
 AWS_REGION="us-east-2"
 export AWS_DEFAULT_REGION="$AWS_REGION"
@@ -116,7 +116,7 @@ DB_ENDPOINT=$(aws rds describe-db-instances \
 
 echo "Configuring data source DB access..."
 DATA_SOURCE_SG=$(aws rds describe-db-instances \
-  --db-instance-identifier "$DATA_SOURCE_DB" \
+  --db-instance-identifier "$DATA_SOURCE_RDS_INSTANCE" \
   --query 'DBInstances[0].VpcSecurityGroups[0].VpcSecurityGroupId' \
   --output text)
 
@@ -131,7 +131,7 @@ echo "════════════════════════�
 echo ""
 echo " 1. Add to ~/.env.nao-secrets:"
 echo "    export NAO_METADATA_URL=\"postgres://nao_user:${NAO_DB_PASSWORD}@${DB_ENDPOINT}:5432/nao_db\""
-echo "    export DATA_URL=\"postgres://postgres:<password>@<data-source-endpoint>:5432/nao-data\""
+echo "    export DATA_SOURCE_HOST=\"<rds-datasource-endpoint>\""
 echo ""
 echo " 2. Copy and run:"
 echo "    scp -i ${KEY_FILE} /c/Users/katep/Secrets/.env.nao-secrets /c/Users/katep/claude/nao-deployment/deploy.sh ubuntu@${ELASTIC_IP}:~/"
