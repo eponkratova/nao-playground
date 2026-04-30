@@ -1,11 +1,14 @@
-#!/usr/bin/env bash
+!/usr/bin/env bash
 set -euo pipefail
 
 : "${NAO_METADATA_URL:?NAO_METADATA_URL is required}"
-: "${DATA_URL:?DATA_URL is required}"
 : "${OPENAI_API_KEY:?OPENAI_API_KEY is required}"
 : "${GITHUB_TOKEN:?GITHUB_TOKEN is required}"
 : "${GITHUB_REPO:?GITHUB_REPO is required}"
+: "${DATA_SOURCE_HOST:?DATA_SOURCE_HOST is required}"
+: "${DATA_SOURCE_DB_NAME:?DATA_SOURCE_DB_NAME is required}"
+: "${DATA_SOURCE_USER:?DATA_SOURCE_USER is required}"
+: "${DATA_SOURCE_PASSWORD:?DATA_SOURCE_PASSWORD is required}"
 
 BETTER_AUTH_SECRET="$(openssl rand -hex 32)"
 PUBLIC_IP="$(curl -s https://checkip.amazonaws.com)"
@@ -22,8 +25,11 @@ echo "Writing /etc/nao/.env..."
 sudo mkdir -p /etc/nao
 sudo tee /etc/nao/.env > /dev/null <<EOF
 DB_URI=${NAO_METADATA_URL}
-DATA_SOURCE_URL=${DATA_URL}
 OPENAI_API_KEY=${OPENAI_API_KEY}
+DATA_SOURCE_HOST=${DATA_SOURCE_HOST}
+DATA_SOURCE_DB_NAME=${DATA_SOURCE_DB_NAME}
+DATA_SOURCE_USER=${DATA_SOURCE_USER}
+DATA_SOURCE_PASSWORD=${DATA_SOURCE_PASSWORD}
 NAO_CONTEXT_SOURCE=git
 NAO_CONTEXT_GIT_URL=${GITHUB_REPO}
 NAO_CONTEXT_GIT_TOKEN=${GITHUB_TOKEN}
