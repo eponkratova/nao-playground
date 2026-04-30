@@ -4,9 +4,14 @@
 project_name: nao-playground
 
 databases:
-  - name: nao-data
+  - name: postgres
     type: postgres
-    uri: "{{ env('DATA_SOURCE_URL') }}"
+    host: "{{ env('DATA_SOURCE_HOST') }}"
+    port: 5432
+    database: "{{ env('DATA_SOURCE_DB_NAME') }}"
+    user: "{{ env('DATA_SOURCE_USER') }}"
+    password: "{{ env('DATA_SOURCE_PASSWORD') }}"
+    schema_name: public
     accessors: [columns, preview, description]
     include: []
     exclude: []
