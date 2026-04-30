@@ -2,9 +2,23 @@
 # https://docs.getnao.io/nao-agent/context-builder/configuration#nao_config-yaml
 
 project_name: nao-playground
-databases: []
-repos:
-- name: nao-payground
-  url: https://github.com/eponkratova/nao-playground.git
-  include: []
-  exclude: []
+
+databases:
+  - name: nao-data
+    type: postgres
+    uri: "{{ env('DATA_SOURCE_URL') }}"
+    accessors: [columns, preview, description]
+    include: []
+    exclude: []
+
+repos: []
+
+llm:
+  provider: openai
+  api_key: "{{ env('OPENAI_API_KEY') }}"
+
+notion:
+  api_key: ""
+  pages: []
+
+slack: null
